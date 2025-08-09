@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ポケポケさいつカップ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+        body {
+            font-family: 'DotGothic16', sans-serif;
+            background-color: #fef2f2;
+        }
+        /* 画像の表示アニメーション */
+        .image-enter {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        .image-enter-active {
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 1000ms ease-in-out, transform 1000ms ease-in-out;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4">
+    <main class="w-full max-w-3xl bg-white shadow-xl rounded-2xl p-8 space-y-8 relative">
+        <header class="text-center">
+            <h1 class="text-4xl font-bold text-gray-800">ポケポケさいつカップ</h1>
+            <p class="text-gray-500 mt-2 text-xl font-semibold">初代チャンピオン 09WAさん</p>
+        </header>
+
+        <div class="flex justify-center">
+            <button id="showPrizeBtn" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-300">
+                優勝賞品
+            </button>
+        </div>
+
+        <!-- 画像とボタンをまとめるコンテナ -->
+        <div id="image-carousel" class="mt-8 flex flex-col items-center">
+            <!-- 画像が表示されるコンテナ -->
+            <div id="image-container" class="relative flex justify-center items-center h-[80vh] w-full bg-gray-100 rounded-xl overflow-hidden shadow-inner border-2 border-dashed border-gray-300">
+                <!-- ここを変更しました -->
+                <p id="placeholder-text" class="text-gray-400 text-lg select-none">ボタンを押すと画像が表示されます</p>
+            </div>
+            
+            <!-- 3つの丸いボタン（最初は非表示） -->
+            <div id="controls" class="mt-4 flex justify-center space-x-4 hidden">
+                <button data-index="0" class="image-nav-btn w-6 h-6 bg-red-300 rounded-full shadow-lg transition-colors duration-200 hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-300"></button>
+                <button data-index="1" class="image-nav-btn w-6 h-6 bg-red-300 rounded-full shadow-lg transition-colors duration-200 hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-300"></button>
+                <button data-index="2" class="image-nav-btn w-6 h-6 bg-red-300 rounded-full shadow-lg transition-colors duration-200 hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-300"></button>
+            </div>
+        </div>
+
+        <!-- 玄関口に戻るボタン -->
+        <div class="flex justify-end mt-4">
+            <a href="entrance.html" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded-full shadow-md transition duration-300">
+                メニューに戻る
+            </a>
+        </div>
+    </main>
+
+    <script>
+        // DOM要素の取得
+        const showPrizeBtn = document.getElementById('showPrizeBtn');
+        const imageContainer = document.getElementById('image-container');
+        const placeholderText = document.getElementById('placeholder-text');
+        const controls = document.getElementById('controls');
+        const imageNavBtns = document.querySelectorAll('.image-nav-btn');
+
+        // 表示する画像の配列と現在のインデックス
+        const images = ['09WA文字有.png', '09WA文字無.png', '09WA小話.png'];
+        let currentIndex = -1;
+
+        // 丸いボタンの表示状態を更新する関数
+        const updateNavButtons = () => {
+            imageNavBtns.forEach((btn, index) => {
+                if (index === currentIndex) {
+                    btn.classList.remove('bg-red-300', 'hover:bg-red-400');
+                    btn.classList.add('bg-red-800'); // アクティブなボタンの色
+                } else {
+                    btn.classList.remove('bg-red-800');
+                    btn.classList.add('bg-red-300', 'hover:bg-red-400');
+                }
+            });
+        };
+
+        // 画像を表示する関数
+        const displayImage = (imageIndex) => {
+            // ローディング状態を示す
+            imageContainer.innerHTML = '';
+            placeholderText.classList.add('hidden');
+            const loadingIndicator = document.createElement('div');
+            loadingIndicator.className = 'w-12 h-12 border-4 border-gray-200 border-t-red-500 rounded-full animate-spin';
+            imageContainer.appendChild(loadingIndicator);
+
+            // 新しい画像要素を作成
+            const newImage = new Image();
+            newImage.src = images[imageIndex];
+            newImage.alt = 'ポートフォリオ作品';
+            newImage.className = 'w-full h-full object-contain transition-all duration-1000 rounded-xl';
+
+            // 画像の読み込みが完了したら表示
+            newImage.onload = () => {
+                imageContainer.innerHTML = '';
+                imageContainer.appendChild(newImage);
+                
+                // アニメーションを適用
+                newImage.classList.add('image-enter');
+                setTimeout(() => {
+                    newImage.classList.add('image-enter-active');
+                }, 10);
+            };
+
+            // 画像の読み込み失敗時のエラーハンドリング
+            newImage.onerror = () => {
+                imageContainer.innerHTML = '<p class="text-red-500">画像の読み込みに失敗しました。ファイルが同じフォルダにあるか確認してください。</p>';
+            };
+        };
+
+        // 「優勝賞品」ボタンのクリックイベント
+        showPrizeBtn.addEventListener('click', () => {
+            if (currentIndex === -1) {
+                // 初めてボタンが押されたときのみ実行
+                currentIndex = 0;
+                displayImage(currentIndex);
+                controls.classList.remove('hidden'); // 丸いボタンを表示
+                updateNavButtons();
+            }
+        });
+
+        // 丸いボタンのクリックイベント
+        imageNavBtns.forEach(button => {
+            button.addEventListener('click', (event) => {
+                const index = parseInt(event.target.dataset.index);
+                currentIndex = index;
+                displayImage(currentIndex);
+                updateNavButtons();
+            });
+        });
+    </script>
+</body>
+</html>

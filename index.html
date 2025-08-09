@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>パスワード入力</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+        body {
+            font-family: 'DotGothic16', sans-serif;
+            background-color: #fef2f2;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4">
+    <main class="w-full max-w-sm bg-white shadow-xl rounded-2xl p-8 space-y-6 text-center">
+        <h1 class="text-3xl font-bold text-gray-800">パスワードを入力してください</h1>
+        <p class="text-gray-500 text-sm">サイトに入るために必要です</p>
+
+        <div class="space-y-4">
+            <input type="password" id="password-input" placeholder="パスワード" class="w-full px-4 py-2 text-center rounded-full border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-300 transition duration-200">
+            <button id="submit-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-300">
+                送信
+            </button>
+        </div>
+
+        <p id="error-message" class="text-red-500 hidden"></p>
+    </main>
+
+    <script>
+        const passwordInput = document.getElementById('password-input');
+        const submitBtn = document.getElementById('submit-btn');
+        const errorMessage = document.getElementById('error-message');
+        const correctPassword = 'saitsupkmn'; // ここで正しいパスワードを設定
+
+        submitBtn.addEventListener('click', () => {
+            if (passwordInput.value === correctPassword) {
+                // パスワードが正しい場合、玄関口のページにリダイレクト
+                window.location.href = 'entrance.html';
+            } else {
+                // パスワードが間違っている場合、エラーメッセージを表示
+                errorMessage.textContent = 'パスワードが違います。もう一度お試しください。';
+                errorMessage.classList.remove('hidden');
+            }
+        });
+
+        // Enterキーで送信できるようにする
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                submitBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>
