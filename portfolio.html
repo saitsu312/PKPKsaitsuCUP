@@ -27,12 +27,12 @@
     <main class="w-full max-w-3xl bg-white shadow-xl rounded-2xl p-8 space-y-8 relative">
         <header class="text-center">
             <h1 class="text-4xl font-bold text-gray-800">ポケポケさいつカップ</h1>
-            <p class="text-gray-500 mt-2 text-xl font-semibold">初代チャンピオン 09WAさん</p>
+            <p class="text-gray-500 mt-2 text-xl font-semibold">準優勝　あすはれさん</p>
         </header>
 
         <div class="flex justify-center">
             <button id="showPrizeBtn" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-300">
-                優勝賞品
+                準優勝商品
             </button>
         </div>
 
@@ -43,11 +43,10 @@
                 <p id="placeholder-text" class="text-gray-400 text-lg select-none">ボタンを押すと画像が表示されます</p>
             </div>
             
-            <!-- 3つの丸いボタン（最初は非表示） -->
+            <!-- 2つの丸いボタン（最初は非表示） -->
             <div id="controls" class="mt-4 flex justify-center space-x-4 hidden">
                 <button data-index="0" class="image-nav-btn w-6 h-6 bg-red-300 rounded-full shadow-lg transition-colors duration-200 hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-300"></button>
                 <button data-index="1" class="image-nav-btn w-6 h-6 bg-red-300 rounded-full shadow-lg transition-colors duration-200 hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-300"></button>
-                <button data-index="2" class="image-nav-btn w-6 h-6 bg-red-300 rounded-full shadow-lg transition-colors duration-200 hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-300"></button>
             </div>
         </div>
 
@@ -68,7 +67,7 @@
         const imageNavBtns = document.querySelectorAll('.image-nav-btn');
 
         // 表示する画像の配列と現在のインデックス
-        const images = ['09WA文字有.png', '09WA文字無.png', '09WA小話.png'];
+        const images = ['PCS1あすはれ.png', 'PCS1あすはれ文字有り.png'];
         let currentIndex = -1;
 
         // 丸いボタンの表示状態を更新する関数
@@ -122,7 +121,7 @@
             };
         };
 
-        // 「優勝賞品」ボタンのクリックイベント
+        // 「準優勝商品」ボタンのクリックイベント
         showPrizeBtn.addEventListener('click', () => {
             if (currentIndex === -1) {
                 // 初めてボタンが押されたときのみ実行
